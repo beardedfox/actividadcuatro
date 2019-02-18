@@ -34,6 +34,7 @@ public class Main {
         System.out.println("Introduce el nombre de tu divisa (MXN, USD, CAD, EUR, ARS, VES):");
 
         String divisa = scanner.next();
+        System.out.println("... espere un momento");
 
         List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
 
