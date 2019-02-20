@@ -46,7 +46,9 @@ public class Main {
             }
         }
         
-        existenciaDivisa(existencia);
+      if(!existencia){
+        System.out.println("La divisa no existe");
+      }
 
     }
     
@@ -69,14 +71,6 @@ public class Main {
         return lista;
     }
     
-    private static void existenciaDivisa(boolean existe){
-      
-      if(!existe){
-        System.out.println("La divisa no existe");
-      }
-      
-    }
-
             
     /*
      * Clase privada para obtener los datos de las divisas
