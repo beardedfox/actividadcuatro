@@ -27,6 +27,7 @@ public class Main {
     public static void main(String[] args) throws IOException  {
 
         Scanner scanner = new Scanner(System.in);
+        boolean existencia = false;
 
         System.out.println("********************");
         System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
@@ -41,9 +42,11 @@ public class Main {
         for (int i  = 0; i < lista.size()-2; i++) {
             if (lista.get(i).symbol.equals("localbtc" + divisa)) {
                 System.out.println(lista.get(i+1).currency + " : " + lista.get(i+1).ask);
+                existencia = true;
             }
         }
         
+        existenciaDivisa(existencia);
 
     }
     
@@ -64,6 +67,14 @@ public class Main {
         List<DivisaJsonClass> lista = new Gson().fromJson(isr, token.getType());
         
         return lista;
+    }
+    
+    private static void existenciaDivisa(boolean existe){
+      
+      if(!existe){
+        System.out.println("La divisa no existe");
+      }
+      
     }
 
             
