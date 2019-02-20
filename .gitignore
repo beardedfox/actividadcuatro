@@ -7,8 +7,10 @@
 **/nbproject/Package-*.bash
 build/
 nbbuild/
+target/
 dist/
 nbdist/
 .nb-gradle/
+target/
 *.class
 # End of https://www.gitignore.io/api/netbeans
