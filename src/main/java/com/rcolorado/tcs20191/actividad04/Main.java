@@ -27,6 +27,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Scanner scanner = new Scanner(System.in);
+        boolean existencia = false;
 
         System.out.println("*********************************************************************");
         System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
@@ -37,6 +38,7 @@ public class Main {
         System.out.println("... espere un momento");
 
         List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
+
         if (divisa.toUpperCase().equals("DIVI")) {
             for (int i = 0; i < lista.size(); i++) {
                 Pattern pat = Pattern.compile("^localbtc.*");
@@ -54,6 +56,11 @@ public class Main {
                 }
             }
         }
+        
+      if(!existencia){
+        System.out.println("La divisa no existe");
+      }
+
 
     }
 
@@ -74,7 +81,12 @@ public class Main {
 
         return lista;
     }
+<<<<<<< HEAD
 
+=======
+    
+            
+>>>>>>> REQUERIMIENTO203
     /*
      * Clase privada para obtener los datos de las divisas
      *
