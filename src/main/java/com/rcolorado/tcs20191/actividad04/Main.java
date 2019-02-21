@@ -53,6 +53,7 @@ public class Main {
             for (int i = 0; i < lista.size() -1; i++) {
                 if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
                     System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
+                    existencia = true;
                 }
             }
         }
@@ -81,12 +82,7 @@ public class Main {
 
         return lista;
     }
-<<<<<<< HEAD
 
-=======
-    
-            
->>>>>>> REQUERIMIENTO203
     /*
      * Clase privada para obtener los datos de las divisas
      *
