@@ -40,7 +40,7 @@ public class Main {
 
         for (int i  = 0; i < lista.size()-1; i++) {
             if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
-                System.out.println(lista.get(i+1).currency + " : " + lista.get(i+1).ask);
+                System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
             }
         }
         
