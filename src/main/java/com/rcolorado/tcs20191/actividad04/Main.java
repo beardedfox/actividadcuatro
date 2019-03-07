@@ -39,6 +39,7 @@ public class Main {
 
         List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
 
+       
         if (divisa.toUpperCase().equals("DIVI")) {
             for (int i = 0; i < lista.size(); i++) {
                 Pattern pat = Pattern.compile("^localbtc.*");
@@ -57,7 +58,7 @@ public class Main {
                 }
             }
         }
-        
+       
       if(!existencia){
         System.out.println("La divisa no existe");
       }
