@@ -29,40 +29,43 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean existencia = false;
 
-        System.out.println("*********************************************************************");
-        System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
-        System.out.println("*********************************************************************");
-        System.out.println("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
+        String divisa = "";
+        while (!divisa.toUpperCase().equals("NINGUNA")) {
 
-        String divisa = scanner.next();
-        System.out.println("... espere un momento");
+            System.out.println("*********************************************************************");
+            System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
+            System.out.println("*********************************************************************");
+            System.out.println("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
 
-        List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
+            divisa = scanner.next();
+            System.out.println("... espere un momento");
 
-       
-        if (divisa.toUpperCase().equals("DIVI")) {
-            for (int i = 0; i < lista.size(); i++) {
-                Pattern pat = Pattern.compile("^localbtc.*");
-                Matcher mat = pat.matcher(lista.get(i).symbol);
-                if (mat.matches()) {
-                    String ultimosCaracteres = lista.get(i).symbol.substring(lista.get(i).symbol.length() -3);
-                    System.out.print(ultimosCaracteres + ", ");
-                    
-                } 
-            }
-        } else {
-            for (int i = 0; i < lista.size() -1; i++) {
-                if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
-                    System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
-                    existencia = true;
+            List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
+
+            if (divisa.toUpperCase().equals("DIVI")) {
+                for (int i = 0; i < lista.size(); i++) {
+                    Pattern pat = Pattern.compile("^localbtc.*");
+                    Matcher mat = pat.matcher(lista.get(i).symbol);
+                    if (mat.matches()) {
+                        String ultimosCaracteres = lista.get(i).symbol.substring(lista.get(i).symbol.length() - 3);
+                        System.out.print(ultimosCaracteres + ", ");
+
+                    }
+                }
+            } else {
+                for (int i = 0; i < lista.size() - 1; i++) {
+                    if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
+                        System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
+                        existencia = true;
+                    }
                 }
             }
-        }
-       
-      if(!existencia){
-        System.out.println("La divisa no existe");
-      }
 
+            if (!existencia) {
+                System.out.println("La divisa no existe");
+            }
+
+        }
 
     }
 
