@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Scanner;
+import java.text.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,35 +29,37 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean existencia = false;
 
+        
         String divisa = "";
         while (!divisa.toUpperCase().equals("NINGUNA")) {
+        System.out.println("********************");
+        System.out.println("Fecha actual del sistema:"+ obtieneFechaAccesso());
+        System.out.println("********************");
+        System.out.println("*********************************************************************");
+        System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
+        System.out.println("*********************************************************************");
+        System.out.println("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
 
-            System.out.println("*********************************************************************");
-            System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
-            System.out.println("*********************************************************************");
-            System.out.println("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
+        divisa = scanner.next();
+        System.out.println("... espere un momento");
 
-            divisa = scanner.next();
-            System.out.println("... espere un momento");
+        List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
 
-            List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
-
-            if (divisa.toUpperCase().equals("DIVI")) {
-                for (int i = 0; i < lista.size(); i++) {
-                    Pattern pat = Pattern.compile("^localbtc.*");
-                    Matcher mat = pat.matcher(lista.get(i).symbol);
-                    if (mat.matches()) {
-                        String ultimosCaracteres = lista.get(i).symbol.substring(lista.get(i).symbol.length() - 3);
-                        System.out.print(ultimosCaracteres + ", ");
-
-                    }
-                }
-            } else {
-                for (int i = 0; i < lista.size() - 1; i++) {
-                    if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
-                        System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
-                        existencia = true;
-                    }
+        if (divisa.toUpperCase().equals("DIVI")) {
+            for (int i = 0; i < lista.size(); i++) {
+                Pattern pat = Pattern.compile("^localbtc.*");
+                Matcher mat = pat.matcher(lista.get(i).symbol);
+                if (mat.matches()) {
+                    String ultimosCaracteres = lista.get(i).symbol.substring(lista.get(i).symbol.length() -3);
+                    System.out.print(ultimosCaracteres + ", ");
+                    
+                } 
+            }
+        } else {
+            for (int i = 0; i < lista.size() -1; i++) {
+                if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
+                    System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
+                    existencia = true;
                 }
             }
 
@@ -65,6 +67,8 @@ public class Main {
                 System.out.println("La divisa no existe");
             }
 
+        }
+        
         }
 
     }
@@ -85,6 +89,12 @@ public class Main {
         List<DivisaJsonClass> lista = new Gson().fromJson(isr, token.getType());
 
         return lista;
+    }
+    
+    private static String obtieneFechaAccesso(){
+      Date fecha = new Date();
+      DateFormat horaFechaFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+      return horaFechaFormato.format(fecha);
     }
 
     /*
