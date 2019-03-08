@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
-import java.util.Scanner;
+import java.text.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,6 +29,9 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         boolean existencia = false;
 
+        System.out.println("********************");
+        System.out.println("Fecha actual del sistema:"+ obtieneFechaAccesso());
+        System.out.println("********************");
         System.out.println("*********************************************************************");
         System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
         System.out.println("*********************************************************************");
@@ -81,6 +84,12 @@ public class Main {
         List<DivisaJsonClass> lista = new Gson().fromJson(isr, token.getType());
 
         return lista;
+    }
+    
+    private static String obtieneFechaAccesso(){
+      Date fecha = new Date();
+      DateFormat horaFechaFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+      return horaFechaFormato.format(fecha);
     }
 
     /*
