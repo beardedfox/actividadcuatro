@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
  */
 public class Main {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
         boolean existencia = false;
@@ -73,8 +73,13 @@ public class Main {
 
     }
 
-    private static List<DivisaJsonClass> ConsultaBitCoinMarket() throws IOException {
-        URL url = new URL("http://api.bitcoincharts.com/v1/markets.json");
+    private static List<DivisaJsonClass> ConsultaBitCoinMarket() {
+        
+        
+        URL url;
+        try {
+            
+            url= new URL("http://api.bitcoincharts.com/v1/markets.json");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Accept", "application/json");
@@ -87,8 +92,13 @@ public class Main {
         TypeToken<List<DivisaJsonClass>> token = new TypeToken<List<DivisaJsonClass>>() {
         };
         List<DivisaJsonClass> lista = new Gson().fromJson(isr, token.getType());
+        return lista;    
+        } catch (IOException e) {
+          return new ArrayList();  
+        }
+        
 
-        return lista;
+        
     }
     
     private static String obtieneFechaAccesso(){
