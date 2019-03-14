@@ -31,7 +31,7 @@ public class Main {
 
         
         String divisa = "";
-        while (!divisa.toUpperCase().equals("NINGUNA")) {
+        while (!divisa.equalsIgnoreCase("NINGUNA")) {
         System.out.println("********************");
         System.out.println("Fecha actual del sistema:"+ obtieneFechaAccesso());
         System.out.println("********************");
@@ -45,7 +45,7 @@ public class Main {
 
         List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
 
-        if (divisa.toUpperCase().equals("DIVI")) {
+        if (divisa.equalsIgnoreCase("DIVI")) {
             for (int i = 0; i < lista.size(); i++) {
                 Pattern pat = Pattern.compile("^localbtc.*");
                 Matcher mat = pat.matcher(lista.get(i).symbol);
