@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.*;
 import java.util.*;
+import java.util.logging.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,9 +27,10 @@ public class Main {
 
     public static void main(String[] args) {
 
+        Logger logger = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );   
         Scanner scanner = new Scanner(System.in);
         boolean existencia = false;
-
+        prepararLogger(logger); 
         
         String divisa = "";
         while (!divisa.equalsIgnoreCase("NINGUNA")) {
@@ -99,6 +101,14 @@ public class Main {
 
         
     }
+    
+  private static void prepararLogger(Logger loggerErrores) {
+    LogManager.getLogManager().reset();
+    loggerErrores.setLevel(Level.ALL);
+    ConsoleHandler manejadorConsola = new ConsoleHandler();
+    manejadorConsola.setLevel(Level.SEVERE);
+    loggerErrores.addHandler(manejadorConsola);
+  }
     
     private static String obtieneFechaAccesso(){
       Date fecha = new Date();
