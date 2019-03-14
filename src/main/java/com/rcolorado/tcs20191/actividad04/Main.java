@@ -27,87 +27,94 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Logger logger = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );   
+        Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
         Scanner scanner = new Scanner(System.in);
-        boolean existencia = false;
-        prepararLogger(logger); 
-        
-        String divisa = "";
-        while (!divisa.equalsIgnoreCase("NINGUNA")) {
-        logger.info("*********************************************************************");
-        logger.info("Fecha actual del sistema:");
-        obtieneFechaAccesso();
-        logger.info("*********************************************************************");
-        logger.info("¿Cuánto vale un Bitcoin en mi divisa?");
-        logger.info("*********************************************************************");
-        logger.info("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
-        
+        prepararLogger(logger);
+        String lineaDeSeparacion = "*********************************************************************";
+        String divisaBuscada = "";
+        while (!divisaBuscada.equalsIgnoreCase("NINGUNA")) {
+            logger.info(lineaDeSeparacion);
+            logger.info("Fecha actual del sistema:");
+            obtieneFechaAccesso();
+            logger.info(lineaDeSeparacion);
+            logger.info("¿Cuánto vale un Bitcoin en mi divisa?");
+            logger.info(lineaDeSeparacion);
+            logger.info("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
 
-        divisa = scanner.next();
-        logger.info(";... espere un momento");
+            logger.info(";... espere un momento");
+            divisaBuscada = scanner.next();
 
-        List<DivisaJsonClass> lista = consultaBitCoinMarket();
+            List<DivisaJsonClass> lista = consultaBitCoinMarket();
 
-        if (divisa.equalsIgnoreCase("DIVI")) {
-            for (int i = 0; i < lista.size(); i++) {
-                Pattern pat = Pattern.compile("^localbtc.*");
-                Matcher mat = pat.matcher(lista.get(i).symbol);
-                if (mat.matches()) {
-                    String ultimosCaracteres = lista.get(i).symbol.substring(lista.get(i).symbol.length() -3);
-                    logger.info(ultimosCaracteres);                   
-                } 
-            }
-        } else {
-            for (int i = 0; i < lista.size() -1; i++) {
-                if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
-                    System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
-                    existencia = true;
+            if (divisaBuscada.equalsIgnoreCase("DIVI")) {
+                for (int i = 0; i < lista.size(); i++) {
+
+                    Pattern pat = Pattern.compile("^localbtc.*");
+                    Matcher mat = pat.matcher(lista.get(i).symbol);
+                    if (mat.matches()) {
+                        String ultimosCaracteres = lista.get(i).symbol.substring(lista.get(i).symbol.length() - 3);
+                        logger.info(ultimosCaracteres);
+                    }
                 }
-            }
-
-            if (!existencia) {
-              logger.info("La divisa no existe");
+            } else {
+                buscarExistencia(divisaBuscada);
             }
 
         }
+
+    }
+    
+    
+    private static void buscarExistencia(String divisa) {
+        boolean existencia = false;
         
+        List<DivisaJsonClass> lista = consultaBitCoinMarket();
+        for (int i = 0; i < lista.size() - 1; i++) {
+            if (lista.get(i).symbol.equals("localbtc" + divisa.toUpperCase())) {
+                System.out.println(lista.get(i).currency + " : " + lista.get(i).ask);
+                existencia = true;
+            }
+        }
+        if (!existencia) {
+            Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+            logger.info("La divisa no existe");
         }
 
     }
 
-    private static List<DivisaJsonClass> consultaBitCoinMarket() {        
+    private static List<DivisaJsonClass> consultaBitCoinMarket() {
         URL url;
         try {
-            url= new URL("http://api.bitcoincharts.com/v1/markets.json");
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Accept", "application/json");
+            url = new URL("http://api.bitcoincharts.com/v1/markets.json");
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
 
-        if (conn.getResponseCode() != 200) {
+            if (conn.getResponseCode() != 200) {
+                return new ArrayList();
+            }
+
+            InputStreamReader isr = new InputStreamReader(conn.getInputStream());
+            TypeToken<List<DivisaJsonClass>> token = new TypeToken<List<DivisaJsonClass>>() {
+            };
+            return new Gson().fromJson(isr, token.getType());
+        } catch (IOException e) {
             return new ArrayList();
         }
-
-        InputStreamReader isr = new InputStreamReader(conn.getInputStream());
-        TypeToken<List<DivisaJsonClass>> token = new TypeToken<List<DivisaJsonClass>>() {
-        };
-        return new Gson().fromJson(isr, token.getType());    
-        } catch (IOException e) {
-          return new ArrayList();  
-        }        
     }
-    
-  private static void prepararLogger(Logger loggerErrores) {
-    LogManager.getLogManager().reset();
-    loggerErrores.setLevel(Level.ALL);
-    ConsoleHandler manejadorConsola = new ConsoleHandler();
-    manejadorConsola.setLevel(Level.ALL);
-    loggerErrores.addHandler(manejadorConsola);
-  }
-    
-    private static String obtieneFechaAccesso(){
-      Date fecha = new Date();
-      DateFormat horaFechaFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
-      return horaFechaFormato.format(fecha);
+
+    private static void prepararLogger(Logger loggerErrores) {
+        LogManager.getLogManager().reset();
+        loggerErrores.setLevel(Level.ALL);
+        ConsoleHandler manejadorConsola = new ConsoleHandler();
+        manejadorConsola.setLevel(Level.ALL);
+        loggerErrores.addHandler(manejadorConsola);
+    }
+
+    private static String obtieneFechaAccesso() {
+        Date fecha = new Date();
+        DateFormat horaFechaFormato = new SimpleDateFormat("HH:mm:ss dd/MM/yyyy");
+        return horaFechaFormato.format(fecha);
     }
 
     /*
@@ -154,6 +161,6 @@ public class Main {
         public void setSymbol(String symbol) {
             this.symbol = symbol;
         }
-        
+
     }
 }
