@@ -104,10 +104,43 @@ public class Main {
     class DivisaJsonClass {
 
         // Precio a la venta
-        public double bid;
-        public String currency;
+        private double bid;
+        private String currency;
         // Precio a la compra
-        public double ask;
-        public String symbol;
+        private double ask;
+        private String symbol;
+
+        public double getBid() {
+            return bid;
+        }
+
+        public void setBid(double bid) {
+            this.bid = bid;
+        }
+
+        public String getCurrency() {
+            return currency;
+        }
+
+        public void setCurrency(String currency) {
+            this.currency = currency;
+        }
+
+        public double getAsk() {
+            return ask;
+        }
+
+        public void setAsk(double ask) {
+            this.ask = ask;
+        }
+
+        public String getSymbol() {
+            return symbol;
+        }
+
+        public void setSymbol(String symbol) {
+            this.symbol = symbol;
+        }
+        
     }
 }
