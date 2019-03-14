@@ -43,7 +43,7 @@ public class Main {
         divisa = scanner.next();
         System.out.println("... espere un momento");
 
-        List<DivisaJsonClass> lista = ConsultaBitCoinMarket();
+        List<DivisaJsonClass> lista = consultaBitCoinMarket();
 
         if (divisa.equalsIgnoreCase("DIVI")) {
             for (int i = 0; i < lista.size(); i++) {
@@ -73,7 +73,7 @@ public class Main {
 
     }
 
-    private static List<DivisaJsonClass> ConsultaBitCoinMarket() {
+    private static List<DivisaJsonClass> consultaBitCoinMarket() {
         
         
         URL url;
@@ -85,14 +85,13 @@ public class Main {
         conn.setRequestProperty("Accept", "application/json");
 
         if (conn.getResponseCode() != 200) {
-            throw new RuntimeException("Fallo : HTTP error code : " + conn.getResponseCode());
+            return new ArrayList();
         }
 
         InputStreamReader isr = new InputStreamReader(conn.getInputStream());
         TypeToken<List<DivisaJsonClass>> token = new TypeToken<List<DivisaJsonClass>>() {
         };
-        List<DivisaJsonClass> lista = new Gson().fromJson(isr, token.getType());
-        return lista;    
+        return new Gson().fromJson(isr, token.getType());    
         } catch (IOException e) {
           return new ArrayList();  
         }
