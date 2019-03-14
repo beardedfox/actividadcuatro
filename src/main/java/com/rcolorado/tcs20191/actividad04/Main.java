@@ -34,16 +34,17 @@ public class Main {
         
         String divisa = "";
         while (!divisa.equalsIgnoreCase("NINGUNA")) {
-        System.out.println("********************");
-        System.out.println("Fecha actual del sistema:"+ obtieneFechaAccesso());
-        System.out.println("********************");
-        System.out.println("*********************************************************************");
-        System.out.println("¿Cuánto vale un Bitcoin en mi divisa?");
-        System.out.println("*********************************************************************");
-        System.out.println("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
+        logger.info("*********************************************************************");
+        logger.info("Fecha actual del sistema:");
+        obtieneFechaAccesso();
+        logger.info("*********************************************************************");
+        logger.info("¿Cuánto vale un Bitcoin en mi divisa?");
+        logger.info("*********************************************************************");
+        logger.info("Introduce el nombre de tu divisa o mostrar divisas disponibles (DIVI)");
+        
 
         divisa = scanner.next();
-        System.out.println("... espere un momento");
+        logger.info(";... espere un momento");
 
         List<DivisaJsonClass> lista = consultaBitCoinMarket();
 
@@ -53,8 +54,7 @@ public class Main {
                 Matcher mat = pat.matcher(lista.get(i).symbol);
                 if (mat.matches()) {
                     String ultimosCaracteres = lista.get(i).symbol.substring(lista.get(i).symbol.length() -3);
-                    System.out.print(ultimosCaracteres + ", ");
-                    
+                    logger.info(ultimosCaracteres);                   
                 } 
             }
         } else {
@@ -66,7 +66,7 @@ public class Main {
             }
 
             if (!existencia) {
-                System.out.println("La divisa no existe");
+              logger.info("La divisa no existe");
             }
 
         }
@@ -75,12 +75,9 @@ public class Main {
 
     }
 
-    private static List<DivisaJsonClass> consultaBitCoinMarket() {
-        
-        
+    private static List<DivisaJsonClass> consultaBitCoinMarket() {        
         URL url;
         try {
-            
             url= new URL("http://api.bitcoincharts.com/v1/markets.json");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -96,17 +93,14 @@ public class Main {
         return new Gson().fromJson(isr, token.getType());    
         } catch (IOException e) {
           return new ArrayList();  
-        }
-        
-
-        
+        }        
     }
     
   private static void prepararLogger(Logger loggerErrores) {
     LogManager.getLogManager().reset();
     loggerErrores.setLevel(Level.ALL);
     ConsoleHandler manejadorConsola = new ConsoleHandler();
-    manejadorConsola.setLevel(Level.SEVERE);
+    manejadorConsola.setLevel(Level.ALL);
     loggerErrores.addHandler(manejadorConsola);
   }
     
