@@ -27,10 +27,10 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Logger logr = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );   
+        Logger logger = Logger.getLogger( Logger.GLOBAL_LOGGER_NAME );   
         Scanner scanner = new Scanner(System.in);
         boolean existencia = false;
-
+        prepararLogger(logger); 
         
         String divisa = "";
         while (!divisa.equalsIgnoreCase("NINGUNA")) {
@@ -93,16 +93,12 @@ public class Main {
         return lista;
     }
     
-      private static void prepararLogger(Logger loggerErrores) {
+  private static void prepararLogger(Logger loggerErrores) {
     LogManager.getLogManager().reset();
     loggerErrores.setLevel(Level.ALL);
-    try {
-      FileHandler manejadorArchivo = new FileHandler("LoggerDivisas.log");
-      manejadorArchivo.setLevel(Level.ALL);
-      loggerErrores.addHandler(manejadorArchivo);
-    } catch (IOException e) {
-      loggerErrores.log(Level.SEVERE, "File logger, no funciona", e);
-    }
+    ConsoleHandler manejadorConsola = new ConsoleHandler();
+    manejadorConsola.setLevel(Level.SEVERE);
+    loggerErrores.addHandler(manejadorConsola);
   }
     
     private static String obtieneFechaAccesso(){
